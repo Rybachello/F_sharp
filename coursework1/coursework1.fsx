@@ -7,7 +7,7 @@
   Coursework 1: Basic operations on lists
 
   ------------------------------------
-  Name: Mykola Rybak
+  Name: mykola rybak
   TUT Student ID:
   ------------------------------------
 
