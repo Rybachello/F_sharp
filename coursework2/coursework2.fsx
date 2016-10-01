@@ -87,33 +87,30 @@ subSum [[1;4];[31;3]]
 let isEven x = (x % 2) = 0
 let isOdd x = isEven x = false
 
-let evenSum (list:List<int>) :int =
-    let res  = List.filter isEven list
-    List.sum res
+let evenSum (list:List<int>) :bool =
+    List.sum list |> isEven
+    
+let oddSum (list:List<int>) :bool = 
+    evenSum list = false 
+    
 
-let oddSum (list:List<int>) :int =
-    let res  = List.filter isOdd list
-    List.sum res
+let evenNumbers(list:List<int>) :bool = 
+    isEven list.Length
+    
+let oddNumbers(list:List<int>) :bool = 
+    //evenNumbers list = false
+    isOdd list.Length
 
-let evenNumbers(list:List<int>) :int = 
-    let res = List.filter isEven list
-    res.Length
+//evenNumbers [2;2;4;5;6;4]
+List.filter evenSum [[1;3];[2;2];[3;6]]
 
-let oddNumbers(list:List<int>) :int = 
-    let res = List.filter isOdd list
-    res.Length
-
-//evenNumbers [2;2;4;5;6]
+let filterSegments (op : (List<int>->bool)) (list : List<List<int>>)=
+    let res = List.filter op list
+    res
 
 
-let rec filterSegments (op : (int list->bool), list : int list list)=
-    list
-//   head :: tail -> op head (aggregate op init tail)
-//    match list with
-//    | [] -> init
-//    | head :: tail -> op head (aggregate op init tail)
-
-//filterSegments evenSum [[1;3];[2;2];[3;6]]
+filterSegments evenSum [[1;3];[2;2];[3;6]]
+filterSegments oddNumbers [[1;3;3];[2;2];[3;6]]
 
 
 
