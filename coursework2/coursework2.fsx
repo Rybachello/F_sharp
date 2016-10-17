@@ -24,6 +24,9 @@
 *)
 
 // 1. Make a value sl containing empty list of type string list.
+
+// Wrong type!
+// Wrong name!
 let ls = List.empty<List<string>>
 
 // 2. Make a function shuffle: int list -> int list that rearranges the elements of the argument list
@@ -74,6 +77,8 @@ segments [1;2;3;4;5;6;2;1]
 // 4. Make a function sumSublists : int list list -> int list that will compute the sums of sublists in a list of list of ints.
 // Hint: use the function List.fold to compute the sums of lists of ints.
 
+// Wrong name!
+// Wrong type!
 let rec subSum (list:List<List<int>>)=
     match list with 
     | [] -> 0
