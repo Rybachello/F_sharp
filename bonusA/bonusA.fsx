@@ -14,7 +14,6 @@ let Four = Suc(Suc(Suc(Suc Zero)))// Suc Three
 let Five = Suc(Suc(Suc(Suc(Suc Zero)))) //Suc Five
 let Six = Suc(Suc(Suc(Suc(Suc(Suc Zero))))) //Suc Six
 
-//воно в кінці замість Zero пише, те що було в параметрі n
 let rec add m n = 
    match m with
      | Zero   -> n
@@ -22,7 +21,7 @@ let rec add m n =
 
 add Two Two 
 //val it : Nat = Suc (Suc (Suc (Suc Zero)))
-//
+
 let inc = fun n -> Suc n // = i++
 let dec n1 = 
     match n1 with
@@ -103,6 +102,12 @@ let rec ev (lookup: 't -> int) exp =
 
 // 6. Write a map function for Exp<'t>, it can be thought of a
 //    'renaming' function that renames variables.
+
+let rec map func exp = 
+    match exp with
+    | Val(n) -> Val(func n)
+    | Var(t) -> Var(func t)
+    | Add(t1,t2) -> Add((map func t1),(map func t2))
 
 // 7. Write a bind function (see section 6.8.2) for Exp<'t>, it can be
 //    thought of as a substitution function that replaces variables with
