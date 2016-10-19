@@ -74,8 +74,7 @@ let idealist list = list |> List.choose (fun x -> x)
 //    a list of successes if everything succeeded or returns failure
 //    if 1 or more elements of the list was a failure. Again, pay
 //    close attention to the type.
-
-//let checkLenght (l1:list<'a>)(l2:list<option<'a>>) = if l1.Length < l2.Length  then  None else Some(l1) 
+ 
 let conservative l = l |> idealist |> fun x -> if x.Length < l.Length  then  None else Some(x)
 
 conservative [Some 1; Some 2; Some 3; Some -3];;   
