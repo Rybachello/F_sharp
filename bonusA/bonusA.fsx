@@ -1,4 +1,17 @@
-﻿// Here are some optional exercises, answer the questions below and
+﻿// ITT8060 -- Advanced Programming 2016
+//  Department of Computer Science
+//   Tallinn University of Technology
+//   ------------------------------------
+
+//   Bonus A
+
+//   ------------------------------------
+//   Name: Mykola Rybak
+//   Student ID:myryba
+//   ------------------------------------
+
+
+// Here are some optional exercises, answer the questions below and
 // make sure to write tests.
 
 // 1. implement addition, multiplication, subtraction for Nat as
