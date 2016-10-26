@@ -1,0 +1,137 @@
+﻿(*
+
+  ITT8060 -- Advanced Programming 2016
+  Department of Computer Science
+  Tallinn University of Technology
+  ------------------------------------
+
+  Coursework 5: Working with data: intro to type providers and charting
+
+  ------------------------------------
+  Name: mykola rybak
+  TUT Student ID: myryba
+  ------------------------------------
+
+
+  Answer the questions below.  You answers to questions 1--6 should be
+  correct F# code written after the question. This file is an F#
+  script file, it should be possible to load the whole file at
+  once. If you can't then you have introduced a syntax error
+  somewhere.
+
+  This coursework will be graded. It has to be submitted to the TUT
+  git system using the instructions on the course web page by October 29, 2016.
+*)
+
+// 1) The following three different fuel consumption units for vehicles are in use:
+//    * litres per 100 km
+//    * miles per imperial gallon (in use in the UK)
+//    * miles per US gallon (in use in the US)
+// 1.a) Define the units in terms of units of measure.
+
+[<Measure>] type litresPer100km
+[<Measure>] type mpgUK 
+[<Measure>] type mpgUS
+
+// 1.b) Define 2 functions that convert the appropriate US and imperial mpg values to
+//      litres per 100 km. 
+
+let convertMilesUKtoLitres (temp:float<mpgUK>) = (100.0<litresPer100km>*4.54509<mpgUK>) / (1.609344 * temp)
+let convertMilesUStoLitres (temp:float<mpgUS>) =(100.0<litresPer100km>*3.785411784<mpgUS>) / (1.609344 * temp)
+//converMilesUStoLitres 85.6<mpgUK>
+//val it : float<litresPer100km> = 14.12093996
+//convertMilesUStoLitres  85.6<mpgUS>
+//val it : float<litresPer100km> = 11.76072917
+
+// 1.c) Define a function that converts litres per 100 km of appropriate fuel to
+//      CO2 emissions g per km.
+
+[<Measure>] type CO2perKmGasoline
+[<Measure>] type CO2perKmDiesel
+[<Measure>] type CO2perKmAutogas
+
+//litres per 100 km to gram of CO2 per km (Gasoline)
+let convertLiterPer100ToCO2emGasoline (temp:float<litresPer100km>) = temp * 26.5<CO2perKmGasoline> / 1.0<litresPer100km>
+//litres per 100 km to gram of CO2 per km (Diesel)
+let convertLiterPer100ToCO2emDiesel (temp:float<litresPer100km>) = temp * 23.2<CO2perKmDiesel> / 1.0<litresPer100km>
+//litres per 100 km to gram of CO2 per km (Autogas)
+let convertLiterPer100ToCO2emAutogas (temp:float<litresPer100km>) = temp * 19.0<CO2perKmAutogas> / 1.0<litresPer100km>
+convertLiterPer100ToCO2emGasoline 20.0<litresPer100km>
+//val it : float<CO2perKmGasoline> = 530.0
+convertLiterPer100ToCO2emDiesel 20.0<litresPer100km>
+//val it : float<CO2perKmDiesel> = 464.0
+convertLiterPer100ToCO2emAutogas 20.0<litresPer100km>
+//val it : float<CO2perKmGasoline> = 380.0
+
+// 2) Get the fuel consumption data
+// 2.a) in imperial MPG (miles per imperial gallon) of at least 20 vehicles from
+// http://carfueldata.direct.gov.uk/search-by-fuel-economy.aspx
+// Save the data in file called imperial.csv
+
+ 
+#r @"..\packages\FSharp.Data.2.3.2\lib\net40\FSharp.Data.dll"
+open FSharp.Data
+
+//let firstRow = t.Rows |> Seq.head
+//let manufacturer = firstRow.Manufacturer
+//let CO2 = firstRow.CO2
+
+// 2.b) Get the fuel consumption data of at least 20 cars in US MPG (miles per US gallon) from
+// https://www.fueleconomy.gov/feg/download.shtml
+// save the data in file called us.csv
+
+// 3) Load the imperial.csv and us.csv files using FSharp.Data.CsvProvider<>
+
+type imperialType = FSharp.Data.CsvProvider<"./imperial.csv">
+let imperialData = imperialType.Load("./imperial.csv")
+
+
+type usType =  FSharp.Data.CsvProvider<"./us.csv">
+let usData = usType.Load("./us.csv").Cache()
+
+// 4) Write a function to convert the appropriate mpg data into
+//    litres per 100 km using the functions defined in Q1.
+
+let convertToMgpUK (f: decimal)  = System.Convert.ToDouble(f) * 1.0<mpgUK>
+let impDataPer100km = imperialData.Rows |> Seq.map (fun row  ->row.ImperialCombined |> convertToMgpUK |> convertMilesUKtoLitres) 
+
+let convertToMpgUS (f: decimal)  = System.Convert.ToDouble(f) * 1.0<mpgUS>
+
+
+for row in usData.Rows do
+   printfn "HLOC: %s" 
+      (row.Model "High")
+      //let usDataPer100km = usData.Rows|> Seq.map (fun row  ->row.CmbMPG |> convertToMpgUS |> convertMilesUStoLitres)
+//let newdata = imperialData.Map(fun row  ->row.ImperialCombined |> convertToMgpUK |> converMilesUStoLitres)
+for row in imperialData.Rows do
+
+     row.ImperialCombined|> convertToMgpUK|>converMilesUStoLitres
+  //  imperialData.Append(newdata)
+let row1s = imperialData.Rows |> List.ofSeq    
+//    printfn "HLOC: hi" 
+// 5) Display the converted data in an appropriate chart (select the type that is most 
+//    appropriate for displaying the data).
+
+#r @"..\packages\FSharp.Charting.0.90.14\lib\net40\FSharp.Charting.dll"
+
+open FSharp.Charting
+open FSharp.Charting.ChartTypes
+//
+
+[for row in imperialData.Rows -> row.Model, row.ImperialCombined]
+ |> Chart.FastLine
+
+Chart.Line([for x in 0 .. 10 -> x,x*x]).ShowChart()
+
+
+// 6) Combine the data from 2 data sources into a single chart. Add appropriate titles and
+//    legends. 
+
+
+let randomTrend1 = [for row in imperialData.Rows -> row.Model,row.ImperialCombined]
+let randomTrend2 = [for row in imperialData.Rows -> row.Description, row.FuelType]
+
+Chart.Combine [Chart.Line (randomTrend1, Title = "Great chart");
+              Chart.Point randomTrend2]
+
+

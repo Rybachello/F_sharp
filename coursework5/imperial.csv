@@ -1,0 +1,21 @@
+Manufacturer,Model,Description,Gearbox,ImperialCombined,FuelType,CO2,TaxBand
+BMW,"i Series, From November 2013",i3 with Range Extender,N/A,470.8,Electricity / Petrol,13,A
+KIA,Optima 4-door,'PHEV' 2.0 GDi 202bhp,A6,176.6,Electricity / Petrol,37,A
+AUDI,A3 Sportback,e-tron 1.4 150PS S-tronic 17'' wheels,D6,176,Electricity / Petrol,37,A
+AUDI,New A3 Sportback,e-tron 1.4 150PS S-tronic 17'' wheels,D6,166.2,Electricity / Petrol,38,A
+AUDI,A3 Sportback,e-tron 1.4 150PS S-tronic 18'' wheels,D6,166,Electricity / Petrol,39,A
+VOLKSWAGEN,Golf,GTE 1.4 TSI 150PS DSG Plug-In-Hybrid,D6,166,Electricity / Petrol,39,A
+VOLKSWAGEN,Passat Estate,1.4 TSI Plug-In-Hybrid 156PS DSG GTE,D6,166,Electricity / Petrol,39,A
+VOLKSWAGEN,Passat Saloon,1.4 TSI Plug-In-Hybrid 156PS DSG GTE,D6,166,Electricity / Petrol,39,A
+AUDI,New A3 Sportback,e-tron 1.4 150PS S-tronic 18'' wheels,D6,156.9,Electricity / Petrol,40,A
+AUDI,Q7,e-tron 3.0 TDI V6 quattro 259PS,QA8,156.9,Electricity / Diesel,48,A
+AUDI,Q7,e-tron 3.0 TDI quattro (258PS) V6 8speed Tiptronicwith 19'' wheels,QA8,156.9,Electricity / Diesel,48,A
+VOLVO,"V60, MY16",D6 Twin Engine,6AT,155.2,Electricity / Diesel,48,A
+VOLVO,V60 MY17,D6 AWD Plug in Hybrid,6AT,155.2,Electricity / Diesel,48,A
+VOLVO,V60 MY17,D5 AWD Plug in Hybrid,6AT,155.2,Electricity / Diesel,48,A
+AUDI,Q7,e-tron 3.0 TDI quattro (258PS) V6 8speed Tiptronicwith 20'' & 21'' wheels,QA8,148.7,Electricity / Diesel,50,A
+BMW,"3 Series Saloon F30, From February 2012",330e - 7Jx16'' wheels,A8,148.7,Electricity / Petrol,44,A
+BMW,"3 Series Saloon F30, From February 2012",330e - 7.5Jx16'' & 17'' wheels,A8,148.7,Electricity / Petrol,45,A
+MITSUBISHI,"Outlander PHEV, 2014",GX5h 2.0 PHEV,CVT,148.5,Electricity / Petrol,44,A
+BMW,"2 Series Active Tourer F45, From September 2014",225xe Active Tourer - 16'' & 17'' tyres,A8,141.2,Electricity / Petrol,46,A
+BMW,"2 Series Active Tourer F45, From September 2014",225xe Active Tourer - 18'' tyres,A8,134.5,Electricity / Petrol,49,A
