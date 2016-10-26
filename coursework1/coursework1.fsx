@@ -53,6 +53,7 @@ let unis :List<string*int> =  [("http://www.ut.ee/en",1632);("http://www.lp.edu.
 //let filterOutYoungerThan (age : int) ( uni :List<string*int>) :List<string*int>=
 let filterOutYoungerThan (age : int) ( uni : (string*int) list) : (string*int) list = 
    uni|>List.filter (fun ex-> 2016 - snd ex  <  age) 
+// try to avoid encoding constants into function body.
 
 // 5. Test the function 'filterOutYoungerThan' to filter out universities younger than 100 years in 
 // your list 'unis'.
@@ -90,6 +91,7 @@ let http (url: string) =
 let getSource (data :(string * int)) :(string * string)=
     let httpData = http (fst data)
     ((fst data),httpData)    
+// pattern match at argument level and you will get a shorter solution.
 
 //let resTartu = getSource ("http://www.ut.ee/en", 1784)
 //let r = (snd resTartu).Length
@@ -113,3 +115,8 @@ let getSize (data :string*string) : (string*int) =
 
 let getSourceSizes (uni :(string * int) list): (string * int) list =
     uni|>List.map (fun ex ->ex |> getSource|>getSize)
+//     uni |> List.map (getSource>>getSize)
+// would be shorter.
+
+
+
