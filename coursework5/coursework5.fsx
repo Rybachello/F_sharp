@@ -112,15 +112,17 @@ open FSharp.Charting
 open FSharp.Charting.ChartTypes
 //
 
-Chart.Line(convertedImperialData,"Imperial Data").ShowChart()
+//Chart.Line(convertedImperialData,"Imperial Data").ShowChart()
+let c1 = Chart.Line (convertedImperialData, Title = "Imperial data", YTitle = "CO2", XTitle = "Liters/100km")
+c1.ShowChart()
 
-
-Chart.Line(convertedUSData,"US Data").ShowChart()
+let c2 = Chart.Line (convertedUSData, Title = "US Data", YTitle = "Comb O2", XTitle = "Liters/100km")
+c2.ShowChart()
 // 6) Combine the data from 2 data sources into a single chart. Add appropriate titles and
 //    legends. 
 
 Chart.Combine(
-   [ Chart.Line(convertedImperialData,Name = "Imperial Data")
-     Chart.Line(convertedUSData,Name = "US Data") ]).ShowChart()
+   [ Chart.Line (convertedImperialData, Title = "Imperial (blue) and US data (yellow)", YTitle = "CO2", XTitle = "Liters/100km")
+     Chart.Line (convertedUSData, Title = "Imperial and US data", YTitle = "CO2", XTitle = "Liters/100km") ]).ShowChart()
 
 
