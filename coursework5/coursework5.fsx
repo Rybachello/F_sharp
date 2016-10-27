@@ -87,28 +87,22 @@ let imperialData = imperialType.Load("./imperial.csv")
 
 
 type usType =  FSharp.Data.CsvProvider<"./us.csv">
-let usData = usType.Load("./us.csv").Cache()
+let usData = usType.Load("./us.csv")
 
 // 4) Write a function to convert the appropriate mpg data into
 //    litres per 100 km using the functions defined in Q1.
 
 let convertToMgpUK (f: decimal)  = System.Convert.ToDouble(f) * 1.0<mpgUK>
-let impDataPer100km = imperialData.Rows |> Seq.map (fun row  ->row.ImperialCombined |> convertToMgpUK |> convertMilesUKtoLitres) 
+//function to convert uk data and sort by float<litresPer100>
+let convertImperialDataToLitresPer100km (data: imperialType) = data.Rows |> Seq.map (fun row  ->row.ImperialCombined |> convertToMgpUK |> convertMilesUKtoLitres,row.CO2) |> Seq.sortBy (fun x -> (fst x))
+//converted data
+let convertedImperialData = convertImperialDataToLitresPer100km imperialData
 
-let convertToMpgUS (f: decimal)  = System.Convert.ToDouble(f) * 1.0<mpgUS>
-
-
-for row in usData.Rows do
-   printfn "HLOC: %s" 
-      (row.Model "High")
-      //let usDataPer100km = usData.Rows|> Seq.map (fun row  ->row.CmbMPG |> convertToMpgUS |> convertMilesUStoLitres)
-//let newdata = imperialData.Map(fun row  ->row.ImperialCombined |> convertToMgpUK |> converMilesUStoLitres)
-for row in imperialData.Rows do
-
-     row.ImperialCombined|> convertToMgpUK|>converMilesUStoLitres
-  //  imperialData.Append(newdata)
-let row1s = imperialData.Rows |> List.ofSeq    
-//    printfn "HLOC: hi" 
+let convertToMpgUS (f: int)  = System.Convert.ToDouble(f) * 1.0<mpgUS>
+//function to convert us data, filtering and sort
+let convertUSDataToLitresPer100km (data: usType)= data.Rows|> Seq.map (fun row  -> (row.CmbMPG |> convertToMpgUS |> convertMilesUStoLitres, row.``Comb CO2``)) |> Seq.sortBy (fun x -> (fst x))
+//converted data
+let convertedUSData = convertUSDataToLitresPer100km usData
 // 5) Display the converted data in an appropriate chart (select the type that is most 
 //    appropriate for displaying the data).
 
@@ -118,20 +112,15 @@ open FSharp.Charting
 open FSharp.Charting.ChartTypes
 //
 
-[for row in imperialData.Rows -> row.Model, row.ImperialCombined]
- |> Chart.FastLine
-
-Chart.Line([for x in 0 .. 10 -> x,x*x]).ShowChart()
+Chart.Line(convertedImperialData,"Imperial Data").ShowChart()
 
 
+Chart.Line(convertedUSData,"US Data").ShowChart()
 // 6) Combine the data from 2 data sources into a single chart. Add appropriate titles and
 //    legends. 
 
-
-let randomTrend1 = [for row in imperialData.Rows -> row.Model,row.ImperialCombined]
-let randomTrend2 = [for row in imperialData.Rows -> row.Description, row.FuelType]
-
-Chart.Combine [Chart.Line (randomTrend1, Title = "Great chart");
-              Chart.Point randomTrend2]
+Chart.Combine(
+   [ Chart.Line(convertedImperialData,Name = "Imperial Data")
+     Chart.Line(convertedUSData,Name = "US Data") ]).ShowChart()
 
 
