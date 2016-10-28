@@ -72,10 +72,6 @@ convertLiterPer100ToCO2emAutogas 20.0<litresPer100km>
 #r @"..\packages\FSharp.Data.2.3.2\lib\net40\FSharp.Data.dll"
 open FSharp.Data
 
-//let firstRow = t.Rows |> Seq.head
-//let manufacturer = firstRow.Manufacturer
-//let CO2 = firstRow.CO2
-
 // 2.b) Get the fuel consumption data of at least 20 cars in US MPG (miles per US gallon) from
 // https://www.fueleconomy.gov/feg/download.shtml
 // save the data in file called us.csv
@@ -94,13 +90,13 @@ let usData = usType.Load("./us.csv")
 
 let convertToMgpUK (f: decimal)  = System.Convert.ToDouble(f) * 1.0<mpgUK>
 //function to convert uk data and sort by float<litresPer100>
-let convertImperialDataToLitresPer100km (data: imperialType) = data.Rows |> Seq.map (fun row  ->row.ImperialCombined |> convertToMgpUK |> convertMilesUKtoLitres) //|> Seq.sortBy (fun x -> (fst x)) //,row.Model
+let convertImperialDataToLitresPer100km (data: imperialType) = data.Rows |> Seq.map (fun row  ->row.ImperialCombined |> convertToMgpUK |> convertMilesUKtoLitres)
 //converted data
 let convertedImperialData = convertImperialDataToLitresPer100km imperialData
 
 let convertToMpgUS (f: int)  = System.Convert.ToDouble(f) * 1.0<mpgUS>
 //function to convert us data, filtering and sort
-let convertUSDataToLitresPer100km (data: usType)= data.Rows|> Seq.map (fun row  -> (row.``City MPG`` |> convertToMpgUS |> convertMilesUStoLitres))//, row.``Comb CO2``)) |> Seq.sortBy (fun x -> (fst x))
+let convertUSDataToLitresPer100km (data: usType)= data.Rows|> Seq.map (fun row  -> (row.``City MPG`` |> convertToMpgUS |> convertMilesUStoLitres))//, row.``Comb CO2``))
 //converted data
 let convertedUSData = convertUSDataToLitresPer100km usData
 // 5) Display the converted data in an appropriate chart (select the type that is most 
@@ -113,11 +109,9 @@ open FSharp.Charting.ChartTypes
 //
 let imperialCarModels = imperialData.Rows |> Seq.map (fun row  ->row.Model)
 
-//Chart.Line(convertedImperialData,"Imperial Data").ShowChart()
 let c1 = Chart.Line (convertedImperialData, Title = "Imperial data",Labels = imperialCarModels,YTitle = "Model Number", XTitle = "Liters/100km")
 c1.ShowChart()
 
-//let imperialChart = Chart.Line(convertImp,Name="Liters per 100 km from Imperial galons",Title="L/100km",Labels=imperialCarModels ,Color=System.Drawing.Color.PaleVioletRed,XTitle="Car Number",YTitle="L/100km")
 let usCarModels = usData.Rows |> Seq.map (fun row  ->row.Model)
 
 let c2 = Chart.Line (convertedUSData, Title = "US Data",Labels = usCarModels, YTitle = "Model Number", XTitle = "Liters/100km")
@@ -127,5 +121,5 @@ c2.ShowChart()
 //    legends. 
 
 Chart.Combine(
-   [ Chart.Line (convertedImperialData, Title = "Imperial data",Labels = imperialCarModels,YTitle = "Model Number", XTitle = "Liters/100km")
-     Chart.Line (convertedUSData, Title = "US Data",Labels = usCarModels, YTitle = "Model Number", XTitle = "Liters/100km") ]).ShowChart()
+   [ Chart.Line (convertedImperialData, Title = "Imperial data (blue) and US Data (yellow)",Labels = imperialCarModels,YTitle = "Model Number", XTitle = "Liters/100km")
+     Chart.Line (convertedUSData, Title = "Imperial data (blue) and US Data (yellow)",Labels = usCarModels, YTitle = "Model Number", XTitle = "Liters/100km") ]).ShowChart()
