@@ -42,6 +42,10 @@ let rec mult m n =
         |(Zero,_) -> Zero
         |(m1,Suc(n1)) -> add m1 (mult m1 n1)  
 
+// Operators?
+let (.+) = add
+Four .+ Six
+
 mult Two Three
 //val it : Nat = Suc (Suc (Suc (Suc (Suc (Suc Zero)))))
 
@@ -68,7 +72,7 @@ let rec eval exp =
     | Val n -> NalToInt n
     | Add (n1,n2) ->  eval n1 + eval n2
     | Sub (n1,n2) -> eval n1 - eval n2
-    | Mult (n1,n2) -> 
+    | Mult (n1,n2) ->  
         match n1,n2 with
         | (Val(Zero),_)-> 0
         | (_,Val(Zero)) -> 0
@@ -103,9 +107,10 @@ let rec ev (lookup: 't -> int) exp =
 // 6. Write a map function for Exp<'t>, it can be thought of a
 //    'renaming' function that renames variables.
 
+// The type of your function is too restrictive and your function does the wrong thing
 let rec map func exp = 
     match exp with
-    | Val(n) -> Val(func n)
+    | Val(n) -> Val(func n) // Is this renaming a variable?
     | Var(t) -> Var(func t)
     | Add(t1,t2) -> Add((map func t1),(map func t2))
 
