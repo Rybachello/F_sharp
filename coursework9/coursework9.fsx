@@ -76,38 +76,28 @@ let getDomain (url:string) =
     System.Uri(url).Host
  
 //sorting by domains
-//let sortByDomains urlList = 
-//    urlList |> List.sortBy (fun x -> getDomain x)
+let sortByDomains urlList = 
+    urlList|> Seq.groupBy (fun url -> getDomain url)
 
-//sortByDomains exp 
-//
-//let rec fall list n =
-//    match list with
-//    | [] -> 0
-//    | head::[] -> 1
-//    | head ::tail ->
-//        if getDomain head > getDomain tail.Head
-//        then n
-//        else 1 + fall tail n
-//
-//let rec segments list = 
-//    match list with
-//    | [] -> []
-//    | l ->
-//        let first, last = List.splitAt (fall l 1) l
-//        match last with
-//        | [] -> [first]
-//        | ll -> first :: (segments last)
-//
-//segments exp
-////let downloadSemiParallel urlList = 
-//    
-//    
-//
-//let res = getDomain "http://www.fssnip.net/22/title/URL-Canonicalization"
-//
-////getDomain "http://www.fssnip.net/22/title/URL-Canonicalization"
-     
+//seq string -> Async<string[]>
+let rec downloadSequentially urlList = 
+      async
+                  {
+                    if not (Seq.isEmpty urlList) then 
+                        let! first = downloadAsync (Seq.head urlList) 
+                        let! rest = downloadSequentially (Seq.tail urlList)                   
+                        return first :: rest 
+                    else
+                        return []
+                  }
+
+sortByDomains exp 
+let rec downloadSemiParallel (urlList:string list) =
+    let sortedUrl = sortByDomains urlList
+    let res = sortedUrl |> Seq.map (fun (domain, urlList) -> downloadSequentially urlList) |> Seq.toList                       
+    Async.Parallel res
+  
+//let test = downloadSemiParallel exp
 
 (*
   Task 3:
