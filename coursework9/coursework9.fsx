@@ -111,7 +111,7 @@ let rec downloadSemiParallel (urlList:string list) =
 
 open System.IO
 
-let watcher = new FileSystemWatcher(@"D:\work\F#\practice 2\practice2\practice2")
+let watcher = new FileSystemWatcher(__SOURCE_DIRECTORY__)
 watcher.EnableRaisingEvents <- true
 
 
