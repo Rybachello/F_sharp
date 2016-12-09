@@ -91,14 +91,12 @@ let rec downloadSequentially urlList =
                         return []
                   }
 
-sortByDomains exp 
 let rec downloadSemiParallel (urlList:string list) =
-    let sortedUrl = sortByDomains urlList
-    let res = sortedUrl |> Seq.map (fun (domain, urlList) -> downloadSequentially urlList) |> Seq.toList                       
-    Async.Parallel res
-  
-//let test = downloadSemiParallel exp
-
+    async {    
+        let sortedUrl = sortByDomains urlList
+        let! res = sortedUrl |> Seq.map (fun (domain, urlList) -> downloadSequentially urlList) |> Seq.toList |> Async.Parallel             
+        return res |> List.concat
+    }
 (*
   Task 3:
 
@@ -113,7 +111,7 @@ let rec downloadSemiParallel (urlList:string list) =
 
 open System.IO
 
-let watcher = new FileSystemWatcher(@".")
+let watcher = new FileSystemWatcher(@"D:\work\F#\practice 2\practice2\practice2")
 watcher.EnableRaisingEvents <- true
 
 
