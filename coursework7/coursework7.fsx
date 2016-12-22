@@ -46,7 +46,7 @@ let maxInList xs =
     match xs with
       | []      -> acc
       | x :: xl -> if acc > x then worker acc xl else worker x xl
-  worker (List.head xs) xs
+  worker (List.head xs) xs // It is bad style to access .head without knowing that the list is non-empty
 
 
 maxInList [1 .. 1000000]
@@ -61,7 +61,7 @@ let reverse xs =
     let rec worker acc xs =
         match xs with
         | [] -> acc
-        | x :: xl -> worker ([x] @ acc) xl
+        | x :: xl -> worker ([x] @ acc) xl // Why not x::acc?
     worker [] xs 
 
 (*
