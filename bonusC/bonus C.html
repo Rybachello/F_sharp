@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!--
+      The Untitled parameters will be replaced with the
+      document title extracted from the <h1> element or
+      file name, if there is no <h1> heading
+    -->
+    <title>Untitled</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles/style.css" />
+    <script src="styles/tips.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1.1",
+      { packages: ["corechart", "annotationchart", "calendar",
+          "gauge", "geochart", "map", "sankey", "table", "timeline", "treemap"] })
+    $(function() { if (window.fsiResizeContent) window.fsiResizeContent($("body").height() + 10); });
+  </script>
+    <script language="javascript" type="text/javascript">
+      function init()
+      {
+        try {
+          websocket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/websocket");
+          websocket.onmessage = function(evt) { location.reload(); };
+        } catch (e) { /* silently ignore lack of websockets */ }
+      }
+      window.addEventListener("load", init, false);
+    </script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fslab.org">fslab.org</a></li>
+          <li><a href="http://fsharp.github.io/FSharp.Data/">F# Data</a></li>
+          <li><a href="http://bluemountaincapital.github.io/Deedle">Deedle</a></li>
+          <li><a href="http://bluemountaincapital.github.io/FSharpRProvider">R Provider</a></li>
+          <li><a href="http://tahahachana.github.io/XPlot/">XPlot</a></li>
+          <li><a href="http://www.mathdotnet.com/">Math.Net</a></li>
+        </ul>
+        <h3 class="muted">Journal</h3>
+      </div>
+      <hr />
+      <div class="row" style="margin-top:30px">
+        <div class="span1"></div>
+        <div class="span10" id="main">
+          <p>ITT8060 Advanced Programming 2016<br />
+Department of Computer Science<br />
+Tallinn University of Technology<br />
+Bonus C Coursework : Data analysis using FsLab<br />
+Name: Mykola Rybak<br />
+Student ID: myryba</p>
+<p>What is Birth rate?</p>
+<p>The birth rate (technically, births/population rate) is the total number of live births per
+1,000 of a population in a year. The rate of births in a population is calculated in several ways:</p>
+<p>-live births from a universal registration system for births, deaths, and marriages;</p>
+<p>-population counts from a census;</p>
+<p>-estimation through specialized demographic techniques.</p>
+<p>The birth rate (along with mortality and migration rate) are used to calculate population growth.
+The crude birth rate is the number of live births per 1,000 people per year.Another term used
+interchangeably with birth rate is natality. When the crude death rate is subtracted from the
+crude birth rate, the result is the rate of natural increase (RNI). This is equal to the rate of
+population change (excluding migration). The total (crude) birth rate (which includes all births)—typically
+indicated as births per 1,000 population—is distinguished from an age-specific rate (the number of births
+per 1,000 persons in an age group).</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+<span class="l">20: </span>
+<span class="l">21: </span>
+<span class="l">22: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">FSharp</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">Data</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="i">Deedle</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="i">IO</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs4', 6)" onmouseover="showTip(event, 'fs4', 6)" class="i">System</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs6', 7)" onmouseover="showTip(event, 'fs6', 7)" class="i">XPlot</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs7', 8)" onmouseover="showTip(event, 'fs7', 8)" class="i">GoogleCharts</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs6', 9)" onmouseover="showTip(event, 'fs6', 9)" class="i">XPlot</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="i">GoogleCharts</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs8', 11)" onmouseover="showTip(event, 'fs8', 11)" class="i">Deedle</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 12)" onmouseover="showTip(event, 'fs9', 12)" class="i">wb</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 13)" onmouseover="showTip(event, 'fs10', 13)" class="t">WorldBankData</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs11', 14)" onmouseover="showTip(event, 'fs11', 14)" class="f">GetDataContext</span>()
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 15)" onmouseover="showTip(event, 'fs12', 15)" class="i">birthRateIn2014</span> <span class="o">=</span>
+ [ <span class="k">for</span> <span onmouseout="hideTip(event, 'fs13', 16)" onmouseover="showTip(event, 'fs13', 16)" class="i">c</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs9', 17)" onmouseover="showTip(event, 'fs9', 17)" class="i">wb</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs14', 18)" onmouseover="showTip(event, 'fs14', 18)" class="i">Countries</span> <span class="k">do</span>     
+   <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 19)" onmouseover="showTip(event, 'fs15', 19)" class="i">birthRate</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs13', 20)" onmouseover="showTip(event, 'fs13', 20)" class="i">c</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs16', 21)" onmouseover="showTip(event, 'fs16', 21)" class="i">Indicators</span><span class="o">.</span><span class="i">``Birth rate, crude (per 1,000 people)``</span><span class="o">.</span>[<span class="n">2014</span>]   
+   <span class="k">if</span> <span onmouseout="hideTip(event, 'fs17', 22)" onmouseover="showTip(event, 'fs17', 22)" class="f">not</span>(<span onmouseout="hideTip(event, 'fs18', 23)" onmouseover="showTip(event, 'fs18', 23)" class="t">Double</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs19', 24)" onmouseover="showTip(event, 'fs19', 24)" class="f">IsNaN</span>(<span onmouseout="hideTip(event, 'fs15', 25)" onmouseover="showTip(event, 'fs15', 25)" class="i">birthRate</span>)) <span class="k">then</span>
+        <span class="k">yield</span> <span onmouseout="hideTip(event, 'fs13', 26)" onmouseover="showTip(event, 'fs13', 26)" class="i">c</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs20', 27)" onmouseover="showTip(event, 'fs20', 27)" class="i">Name</span>, <span onmouseout="hideTip(event, 'fs15', 28)" onmouseover="showTip(event, 'fs15', 28)" class="i">birthRate</span>
+ ]
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs21', 29)" onmouseover="showTip(event, 'fs21', 29)" class="i">options</span> <span class="o">=</span> 
+    <span onmouseout="hideTip(event, 'fs22', 30)" onmouseover="showTip(event, 'fs22', 30)" class="t">Options</span>(
+        <span class="i">title</span> <span class="o">=</span> <span class="s">&quot;Birth rate, crude (per 1,000 people)&quot;</span>,
+        <span class="i">seriesType</span> <span class="o">=</span> <span class="s">&quot;line&quot;</span>,
+        <span class="i">colorAxis</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs23', 31)" onmouseover="showTip(event, 'fs23', 31)" class="t">ColorAxis</span>(<span class="i">colors</span><span class="o">=</span>[|<span class="s">&quot;#6CC627&quot;</span>;<span class="s">&quot;#DB9B3B&quot;</span>;<span class="s">&quot;#DB7532&quot;</span>;<span class="s">&quot;#DD5321&quot;</span>;<span class="s">&quot;#E00B00&quot;</span>|])
+    )
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs24', 32)" onmouseover="showTip(event, 'fs24', 32)" class="t">Chart</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs25', 33)" onmouseover="showTip(event, 'fs25', 33)" class="f">Geo</span>(<span onmouseout="hideTip(event, 'fs12', 34)" onmouseover="showTip(event, 'fs12', 34)" class="i">birthRateIn2014</span>)
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs24', 35)" onmouseover="showTip(event, 'fs24', 35)" class="t">Chart</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs26', 36)" onmouseover="showTip(event, 'fs26', 36)" class="f">WithLabels</span> [<span class="s">&quot;Name&quot;</span>; <span class="s">&quot;Birth rate in %&quot;</span>]
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs24', 37)" onmouseover="showTip(event, 'fs24', 37)" class="t">Chart</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs27', 38)" onmouseover="showTip(event, 'fs27', 38)" class="f">WithOptions</span> <span onmouseout="hideTip(event, 'fs21', 39)" onmouseover="showTip(event, 'fs21', 39)" class="i">options</span>
+</code></pre></td>
+</tr>
+</table>
+<div class="fslab-html-output"><script type="text/javascript">
+    google.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var data = new google.visualization.DataTable({"cols": [{"type": "string" ,"id": "Name" ,"label": "Name" }, {"type": "number" ,"id": "Birth rate in %" ,"label": "Birth rate in %" }], "rows" : [{"c" : [{"v": "Aruba"}, {"v": 10.124}]}, {"c" : [{"v": "Afghanistan"}, {"v": 34.225}]}, {"c" : [{"v": "Angola"}, {"v": 45.483}]}, {"c" : [{"v": "Albania"}, {"v": 13.414}]}, {"c" : [{"v": "United Arab Emirates"}, {"v": 10.819}]}, {"c" : [{"v": "Argentina"}, {"v": 17.544}]}, {"c" : [{"v": "Armenia"}, {"v": 13.157}]}, {"c" : [{"v": "Antigua and Barbuda"}, {"v": 16.319}]}, {"c" : [{"v": "Australia"}, {"v": 12.9}]}, {"c" : [{"v": "Austria"}, {"v": 9.6}]}, {"c" : [{"v": "Azerbaijan"}, {"v": 17.9}]}, {"c" : [{"v": "Burundi"}, {"v": 43.867}]}, {"c" : [{"v": "Belgium"}, {"v": 11.1}]}, {"c" : [{"v": "Benin"}, {"v": 36.008}]}, {"c" : [{"v": "Burkina Faso"}, {"v": 40.025}]}, {"c" : [{"v": "Bangladesh"}, {"v": 19.796}]}, {"c" : [{"v": "Bulgaria"}, {"v": 9.4}]}, {"c" : [{"v": "Bahrain"}, {"v": 14.636}]}, {"c" : [{"v": "Bahamas, The"}, {"v": 15.199}]}, {"c" : [{"v": "Bosnia and Herzegovina"}, {"v": 8.947}]}, {"c" : [{"v": "Belarus"}, {"v": 12.5}]}, {"c" : [{"v": "Belize"}, {"v": 22.933}]}, {"c" : [{"v": "Bermuda"}, {"v": 10.5}]}, {"c" : [{"v": "Bolivia"}, {"v": 23.896}]}, {"c" : [{"v": "Brazil"}, {"v": 14.727}]}, {"c" : [{"v": "Barbados"}, {"v": 12.098}]}, {"c" : [{"v": "Brunei Darussalam"}, {"v": 16.043}]}, {"c" : [{"v": "Bhutan"}, {"v": 17.726}]}, {"c" : [{"v": "Botswana"}, {"v": 24.972}]}, {"c" : [{"v": "Central African Republic"}, {"v": 33.774}]}, {"c" : [{"v": "Canada"}, {"v": 10.9}]}, {"c" : [{"v": "Switzerland"}, {"v": 10.2}]}, {"c" : [{"v": "Channel Islands"}, {"v": 9.463}]}, {"c" : [{"v": "Chile"}, {"v": 13.213}]}, {"c" : [{"v": "China"}, {"v": 12.4}]}, {"c" : [{"v": "Cote d'Ivoire"}, {"v": 37.118}]}, {"c" : [{"v": "Cameroon"}, {"v": 36.736}]}, {"c" : [{"v": "Congo, Dem. Rep."}, {"v": 41.96}]}, {"c" : [{"v": "Congo, Rep."}, {"v": 36.536}]}, {"c" : [{"v": "Colombia"}, {"v": 15.773}]}, {"c" : [{"v": "Comoros"}, {"v": 33.897}]}, {"c" : [{"v": "Cabo Verde"}, {"v": 21.388}]}, {"c" : [{"v": "Costa Rica"}, {"v": 14.768}]}, {"c" : [{"v": "Cuba"}, {"v": 10.246}]}, {"c" : [{"v": "Curacao"}, {"v": 12.6}]}, {"c" : [{"v": "Cyprus"}, {"v": 11.326}]}, {"c" : [{"v": "Czech Republic"}, {"v": 10.4}]}, {"c" : [{"v": "Germany"}, {"v": 8.6}]}, {"c" : [{"v": "Djibouti"}, {"v": 25.105}]}, {"c" : [{"v": "Denmark"}, {"v": 10.1}]}, {"c" : [{"v": "Dominican Republic"}, {"v": 20.853}]}, {"c" : [{"v": "Algeria"}, {"v": 24.309}]}, {"c" : [{"v": "Ecuador"}, {"v": 20.781}]}, {"c" : [{"v": "Egypt, Arab Rep."}, {"v": 27.797}]}, {"c" : [{"v": "Eritrea"}, {"v": 34.091}]}, {"c" : [{"v": "Spain"}, {"v": 9.2}]}, {"c" : [{"v": "Estonia"}, {"v": 10.3}]}, {"c" : [{"v": "Ethiopia"}, {"v": 32.412}]}, {"c" : [{"v": "Finland"}, {"v": 10.5}]}, {"c" : [{"v": "Fiji"}, {"v": 20.075}]}, {"c" : [{"v": "France"}, {"v": 12.4}]}, {"c" : [{"v": "Faroe Islands"}, {"v": 13.2}]}, {"c" : [{"v": "Micronesia, Fed. Sts."}, {"v": 23.531}]}, {"c" : [{"v": "Gabon"}, {"v": 30.166}]}, {"c" : [{"v": "United Kingdom"}, {"v": 12}]}, {"c" : [{"v": "Georgia"}, {"v": 13.532}]}, {"c" : [{"v": "Ghana"}, {"v": 32.747}]}, {"c" : [{"v": "Guinea"}, {"v": 36.875}]}, {"c" : [{"v": "Gambia, The"}, {"v": 42.138}]}, {"c" : [{"v": "Guinea-Bissau"}, {"v": 37.097}]}, {"c" : [{"v": "Equatorial Guinea"}, {"v": 35.007}]}, {"c" : [{"v": "Greece"}, {"v": 8.5}]}, {"c" : [{"v": "Grenada"}, {"v": 19.205}]}, {"c" : [{"v": "Greenland"}, {"v": 14.3}]}, {"c" : [{"v": "Guatemala"}, {"v": 27.112}]}, {"c" : [{"v": "Guam"}, {"v": 17.287}]}, {"c" : [{"v": "Guyana"}, {"v": 19.065}]}, {"c" : [{"v": "Hong Kong SAR, China"}, {"v": 8.6}]}, {"c" : [{"v": "Honduras"}, {"v": 21.203}]}, {"c" : [{"v": "Croatia"}, {"v": 9.3}]}, {"c" : [{"v": "Haiti"}, {"v": 24.951}]}, {"c" : [{"v": "Hungary"}, {"v": 9.5}]}, {"c" : [{"v": "Indonesia"}, {"v": 19.955}]}, {"c" : [{"v": "India"}, {"v": 19.952}]}, {"c" : [{"v": "Ireland"}, {"v": 14.4}]}, {"c" : [{"v": "Iran, Islamic Rep."}, {"v": 17.544}]}, {"c" : [{"v": "Iraq"}, {"v": 34.594}]}, {"c" : [{"v": "Iceland"}, {"v": 13.4}]}, {"c" : [{"v": "Israel"}, {"v": 21.3}]}, {"c" : [{"v": "Italy"}, {"v": 8.3}]}, {"c" : [{"v": "Jamaica"}, {"v": 13.54}]}, {"c" : [{"v": "Jordan"}, {"v": 27.052}]}, {"c" : [{"v": "Japan"}, {"v": 8}]}, {"c" : [{"v": "Kazakhstan"}, {"v": 23.13}]}, {"c" : [{"v": "Kenya"}, {"v": 34.636}]}, {"c" : [{"v": "Kyrgyz Republic"}, {"v": 27.7}]}, {"c" : [{"v": "Cambodia"}, {"v": 24.119}]}, {"c" : [{"v": "Kiribati"}, {"v": 28.8}]}, {"c" : [{"v": "Korea, Rep."}, {"v": 8.6}]}, {"c" : [{"v": "Kosovo"}, {"v": 17.4}]}, {"c" : [{"v": "Kuwait"}, {"v": 20.064}]}, {"c" : [{"v": "Lao PDR"}, {"v": 26.666}]}, {"c" : [{"v": "Lebanon"}, {"v": 15.192}]}, {"c" : [{"v": "Liberia"}, {"v": 35.051}]}, {"c" : [{"v": "Libya"}, {"v": 20.887}]}, {"c" : [{"v": "St. Lucia"}, {"v": 15.168}]}, {"c" : [{"v": "Liechtenstein"}, {"v": 9.9}]}, {"c" : [{"v": "Sri Lanka"}, {"v": 15.938}]}, {"c" : [{"v": "Lesotho"}, {"v": 28.644}]}, {"c" : [{"v": "Lithuania"}, {"v": 10.4}]}, {"c" : [{"v": "Luxembourg"}, {"v": 10.9}]}, {"c" : [{"v": "Latvia"}, {"v": 10.9}]}, {"c" : [{"v": "Macao SAR, China"}, {"v": 11.514}]}, {"c" : [{"v": "St. Martin (French part)"}, {"v": 15.7}]}, {"c" : [{"v": "Morocco"}, {"v": 20.75}]}, {"c" : [{"v": "Moldova"}, {"v": 10.725}]}, {"c" : [{"v": "Madagascar"}, {"v": 34.456}]}, {"c" : [{"v": "Maldives"}, {"v": 21.195}]}, {"c" : [{"v": "Mexico"}, {"v": 18.79}]}, {"c" : [{"v": "Macedonia, FYR"}, {"v": 11.253}]}, {"c" : [{"v": "Mali"}, {"v": 43.52}]}, {"c" : [{"v": "Malta"}, {"v": 9.8}]}, {"c" : [{"v": "Myanmar"}, {"v": 17.769}]}, {"c" : [{"v": "Montenegro"}, {"v": 11.612}]}, {"c" : [{"v": "Mongolia"}, {"v": 23.949}]}, {"c" : [{"v": "Mozambique"}, {"v": 39.256}]}, {"c" : [{"v": "Mauritania"}, {"v": 33.399}]}, {"c" : [{"v": "Mauritius"}, {"v": 10.6}]}, {"c" : [{"v": "Malawi"}, {"v": 38.98}]}, {"c" : [{"v": "Malaysia"}, {"v": 16.811}]}, {"c" : [{"v": "Namibia"}, {"v": 29.733}]}, {"c" : [{"v": "New Caledonia"}, {"v": 16.6}]}, {"c" : [{"v": "Niger"}, {"v": 49.443}]}, {"c" : [{"v": "Nigeria"}, {"v": 39.6}]}, {"c" : [{"v": "Nicaragua"}, {"v": 20.35}]}, {"c" : [{"v": "Netherlands"}, {"v": 10.4}]}, {"c" : [{"v": "Norway"}, {"v": 11.5}]}, {"c" : [{"v": "Nepal"}, {"v": 20.516}]}, {"c" : [{"v": "New Zealand"}, {"v": 12.68}]}, {"c" : [{"v": "Oman"}, {"v": 19.918}]}, {"c" : [{"v": "Pakistan"}, {"v": 29.247}]}, {"c" : [{"v": "Panama"}, {"v": 19.407}]}, {"c" : [{"v": "Peru"}, {"v": 19.914}]}, {"c" : [{"v": "Philippines"}, {"v": 23.552}]}, {"c" : [{"v": "Papua New Guinea"}, {"v": 28.51}]}, {"c" : [{"v": "Poland"}, {"v": 9.9}]}, {"c" : [{"v": "Puerto Rico"}, {"v": 9.7}]}, {"c" : [{"v": "Korea, Dem. People’s Rep."}, {"v": 14.349}]}, {"c" : [{"v": "Portugal"}, {"v": 7.9}]}, {"c" : [{"v": "Paraguay"}, {"v": 21.368}]}, {"c" : [{"v": "West Bank and Gaza"}, {"v": 32.661}]}, {"c" : [{"v": "French Polynesia"}, {"v": 16.199}]}, {"c" : [{"v": "Qatar"}, {"v": 11.886}]}, {"c" : [{"v": "Romania"}, {"v": 9.2}]}, {"c" : [{"v": "Russian Federation"}, {"v": 13.3}]}, {"c" : [{"v": "Rwanda"}, {"v": 31.89}]}, {"c" : [{"v": "Saudi Arabia"}, {"v": 20.139}]}, {"c" : [{"v": "Sudan"}, {"v": 33.054}]}, {"c" : [{"v": "Senegal"}, {"v": 38.085}]}, {"c" : [{"v": "Singapore"}, {"v": 9.8}]}, {"c" : [{"v": "Solomon Islands"}, {"v": 29.921}]}, {"c" : [{"v": "Sierra Leone"}, {"v": 36.052}]}, {"c" : [{"v": "El Salvador"}, {"v": 17.314}]}, {"c" : [{"v": "San Marino"}, {"v": 9.1}]}, {"c" : [{"v": "Somalia"}, {"v": 43.61}]}, {"c" : [{"v": "Serbia"}, {"v": 9.3}]}, {"c" : [{"v": "South Sudan"}, {"v": 36.756}]}, {"c" : [{"v": "Sao Tome and Principe"}, {"v": 34.051}]}, {"c" : [{"v": "Suriname"}, {"v": 18.197}]}, {"c" : [{"v": "Slovak Republic"}, {"v": 10.2}]}, {"c" : [{"v": "Slovenia"}, {"v": 10.3}]}, {"c" : [{"v": "Sweden"}, {"v": 11.9}]}, {"c" : [{"v": "Swaziland"}, {"v": 29.747}]}, {"c" : [{"v": "Seychelles"}, {"v": 17}]}, {"c" : [{"v": "Syrian Arab Republic"}, {"v": 23.079}]}, {"c" : [{"v": "Chad"}, {"v": 45.264}]}, {"c" : [{"v": "Togo"}, {"v": 35.569}]}, {"c" : [{"v": "Thailand"}, {"v": 10.79}]}, {"c" : [{"v": "Tajikistan"}, {"v": 30.592}]}, {"c" : [{"v": "Turkmenistan"}, {"v": 21.103}]}, {"c" : [{"v": "Timor-Leste"}, {"v": 37.783}]}, {"c" : [{"v": "Tonga"}, {"v": 24.846}]}, {"c" : [{"v": "Trinidad and Tobago"}, {"v": 14.3}]}, {"c" : [{"v": "Tunisia"}, {"v": 19.2}]}, {"c" : [{"v": "Turkey"}, {"v": 16.789}]}, {"c" : [{"v": "Tanzania"}, {"v": 39.015}]}, {"c" : [{"v": "Uganda"}, {"v": 42.996}]}, {"c" : [{"v": "Ukraine"}, {"v": 10.8}]}, {"c" : [{"v": "Uruguay"}, {"v": 14.258}]}, {"c" : [{"v": "United States"}, {"v": 12.5}]}, {"c" : [{"v": "Uzbekistan"}, {"v": 23.3}]}, {"c" : [{"v": "St. Vincent and the Grenadines"}, {"v": 16.04}]}, {"c" : [{"v": "Venezuela, RB"}, {"v": 19.556}]}, {"c" : [{"v": "Virgin Islands (U.S.)"}, {"v": 10.5}]}, {"c" : [{"v": "Vietnam"}, {"v": 17.157}]}, {"c" : [{"v": "Vanuatu"}, {"v": 26.466}]}, {"c" : [{"v": "Samoa"}, {"v": 25.608}]}, {"c" : [{"v": "Yemen, Rep."}, {"v": 32.418}]}, {"c" : [{"v": "South Africa"}, {"v": 20.657}]}, {"c" : [{"v": "Zambia"}, {"v": 40.052}]}, {"c" : [{"v": "Zimbabwe"}, {"v": 35.189}]}]});
+
+                var options = {"backgroundColor":{"fill":"transparent"},"chartArea":{"backgroundColor":{"fill":"#f4f4f4"}},"colors":["#1f77b4","#aec7e8","#ff7f0e","#ffbb78","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5","#8c564b","#c49c94","#e377c2","#f7b6d2","#7f7f7f","#c7c7c7","#bcbd22","#dbdb8d","#17becf","#9edae5"],"hAxis":{"baselineColor":"#fdfdfd","gridlines":{"color":"#fdfdfd"},"textStyle":{"color":"#000000"}},"legend":{"position":"none","textStyle":{"color":"#000000"}},"title":"Birth rate, crude (per 1,000 people)","titleTextStyle":{"color":"#000000"},"vAxis":{"baselineColor":"#fdfdfd","gridlines":{"color":"#fdfdfd"},"textStyle":{"color":"#000000"}},"colorAxis":{"colors":["#6CC627","#DB9B3B","#DB7532","#DD5321","#E00B00"]},"seriesType":"line","datalessRegionColor":"#fdfdfd"} 
+
+                var chart = new google.visualization.GeoChart(document.getElementById('d769d28c-4092-46e5-8ca4-c5b8b332b4b0'));
+                chart.draw(data, options);
+            }
+</script>
+<div id="d769d28c-4092-46e5-8ca4-c5b8b332b4b0" style="width: 800px; height: 450px;"></div></div>
+<p>From the chart it is clear see that the highest rate in African countries.This is part of
+the fertility-income paradox, as these countries are very poor, and it may seem counter-intuitive
+for families there to have so many children. The inverse relationship between income and fertility
+has been termed a demographic-economic "paradox" by the notion that greater means would enable the
+production of more offspring as suggested by the influential Thomas Malthus</p>
+<p>To represent the countries with the highest rate, need to sort and convert to series:</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs28', 40)" onmouseover="showTip(event, 'fs28', 40)" class="i">topRate</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs12', 41)" onmouseover="showTip(event, 'fs12', 41)" class="i">birthRateIn2014</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs29', 42)" onmouseover="showTip(event, 'fs29', 42)" class="t">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs30', 43)" onmouseover="showTip(event, 'fs30', 43)" class="f">sortBy</span> <span onmouseout="hideTip(event, 'fs31', 44)" onmouseover="showTip(event, 'fs31', 44)" class="f">snd</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs29', 45)" onmouseover="showTip(event, 'fs29', 45)" class="t">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs32', 46)" onmouseover="showTip(event, 'fs32', 46)" class="f">rev</span>  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs29', 47)" onmouseover="showTip(event, 'fs29', 47)" class="t">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs33', 48)" onmouseover="showTip(event, 'fs33', 48)" class="f">toSeq</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs34', 49)" onmouseover="showTip(event, 'fs34', 49)" class="f">series</span>
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs28', 50)" onmouseover="showTip(event, 'fs28', 50)" class="i">topRate</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs35', 51)" onmouseover="showTip(event, 'fs35', 51)" class="t">Series</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs36', 52)" onmouseover="showTip(event, 'fs36', 52)" class="f">sort</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs35', 53)" onmouseover="showTip(event, 'fs35', 53)" class="t">Series</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs37', 54)" onmouseover="showTip(event, 'fs37', 54)" class="f">rev</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs35', 55)" onmouseover="showTip(event, 'fs35', 55)" class="t">Series</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs38', 56)" onmouseover="showTip(event, 'fs38', 56)" class="f">take</span> <span class="n">10</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs24', 57)" onmouseover="showTip(event, 'fs24', 57)" class="t">Chart</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs39', 58)" onmouseover="showTip(event, 'fs39', 58)" class="f">Column</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs24', 59)" onmouseover="showTip(event, 'fs24', 59)" class="t">Chart</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs40', 60)" onmouseover="showTip(event, 'fs40', 60)" class="f">WithTitle</span> <span class="s">&quot;The top birth rate countries&quot;</span>
+</code></pre></td>
+</tr>
+</table>
+<div class="fslab-html-output"><script type="text/javascript">
+    google.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var data = new google.visualization.DataTable({"cols": [{"type": "string" ,"id": "Column 1" ,"label": "Column 1" }, {"type": "number" ,"id": "Column 2" ,"label": "Column 2" }], "rows" : [{"c" : [{"v": "Niger"}, {"v": 49.443}]}, {"c" : [{"v": "Angola"}, {"v": 45.483}]}, {"c" : [{"v": "Chad"}, {"v": 45.264}]}, {"c" : [{"v": "Burundi"}, {"v": 43.867}]}, {"c" : [{"v": "Somalia"}, {"v": 43.61}]}, {"c" : [{"v": "Mali"}, {"v": 43.52}]}, {"c" : [{"v": "Uganda"}, {"v": 42.996}]}, {"c" : [{"v": "Gambia, The"}, {"v": 42.138}]}, {"c" : [{"v": "Congo, Dem. Rep."}, {"v": 41.96}]}, {"c" : [{"v": "Zambia"}, {"v": 40.052}]}]});
+
+                var options = {"backgroundColor":{"fill":"transparent"},"chartArea":{"backgroundColor":{"fill":"#f4f4f4"}},"colors":["#1f77b4","#aec7e8","#ff7f0e","#ffbb78","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5","#8c564b","#c49c94","#e377c2","#f7b6d2","#7f7f7f","#c7c7c7","#bcbd22","#dbdb8d","#17becf","#9edae5"],"hAxis":{"baselineColor":"#fdfdfd","gridlines":{"color":"#fdfdfd"},"textStyle":{"color":"#000000"}},"legend":{"position":"none","textStyle":{"color":"#000000"}},"title":"The top birth rate countries","titleTextStyle":{"color":"#000000"},"vAxis":{"baselineColor":"#fdfdfd","gridlines":{"color":"#fdfdfd"},"textStyle":{"color":"#000000"}},"datalessRegionColor":"#fdfdfd"} 
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('97c081dc-be27-41a0-999d-25740e8e64a9'));
+                chart.draw(data, options);
+            }
+</script>
+<div id="97c081dc-be27-41a0-999d-25740e8e64a9" style="width: 800px; height: 450px;"></div></div>
+<p>Summary</p>
+<p>The Fslab package is very useful and powerful tool that can help you to see resulting
+time series, data frames, matrices, vectors and charts as nicely pretty printed HTML objects.</p>
+<div class="tip" id="fs1">Multiple items<br />namespace FSharp<br /><br />--------------------<br />namespace Microsoft.FSharp</div>
+<div class="tip" id="fs2">Multiple items<br />namespace FSharp.Data<br /><br />--------------------<br />namespace Microsoft.FSharp.Data</div>
+<div class="tip" id="fs3">namespace Deedle</div>
+<div class="tip" id="fs4">namespace System</div>
+<div class="tip" id="fs5">namespace System.IO</div>
+<div class="tip" id="fs6">namespace XPlot</div>
+<div class="tip" id="fs7">namespace XPlot.GoogleCharts</div>
+<div class="tip" id="fs8">module Deedle<br /><br />from XPlot.GoogleCharts</div>
+<div class="tip" id="fs9">val wb : WorldBankData.ServiceTypes.WorldBankDataService<br /><br />Full name: Bonus C.wb</div>
+<div class="tip" id="fs10">type WorldBankData =<br />&#160;&#160;static member GetDataContext : unit -&gt; WorldBankDataService<br />&#160;&#160;nested type ServiceTypes<br /><br />Full name: FSharp.Data.WorldBankData<br /><em><br /><br />&lt;summary&gt;Typed representation of WorldBank data. See http://www.worldbank.org for terms and conditions.&lt;/summary&gt;</em></div>
+<div class="tip" id="fs11">WorldBankData.GetDataContext() : WorldBankData.ServiceTypes.WorldBankDataService</div>
+<div class="tip" id="fs12">val birthRateIn2014 : (string * float) list<br /><br />Full name: Bonus C.birthRateIn2014</div>
+<div class="tip" id="fs13">val c : WorldBankData.ServiceTypes.Country</div>
+<div class="tip" id="fs14">property WorldBankData.ServiceTypes.WorldBankDataService.Countries: WorldBankData.ServiceTypes.Countries</div>
+<div class="tip" id="fs15">val birthRate : float</div>
+<div class="tip" id="fs16">property WorldBankData.ServiceTypes.Country.Indicators: WorldBankData.ServiceTypes.Indicators<br /><em><br /><br />&lt;summary&gt;The indicators for the country&lt;/summary&gt;</em></div>
+<div class="tip" id="fs17">val not : value:bool -&gt; bool<br /><br />Full name: Microsoft.FSharp.Core.Operators.not</div>
+<div class="tip" id="fs18">type Double =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool + 1 overload<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetTypeCode : unit -&gt; TypeCode<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string + 3 overloads<br />&#160;&#160;&#160;&#160;static val MinValue : float<br />&#160;&#160;&#160;&#160;static val MaxValue : float<br />&#160;&#160;&#160;&#160;static val Epsilon : float<br />&#160;&#160;&#160;&#160;static val NegativeInfinity : float<br />&#160;&#160;&#160;&#160;static val PositiveInfinity : float<br />&#160;&#160;&#160;&#160;...<br />&#160;&#160;end<br /><br />Full name: System.Double</div>
+<div class="tip" id="fs19">Double.IsNaN(d: float) : bool</div>
+<div class="tip" id="fs20">property Runtime.WorldBank.Country.Name: string</div>
+<div class="tip" id="fs21">val options : Options<br /><br />Full name: Bonus C.options</div>
+<div class="tip" id="fs22">Multiple items<br />type Options =<br />&#160;&#160;new : unit -&gt; Options<br />&#160;&#160;member ShouldSerializeaggregationTarget : unit -&gt; bool<br />&#160;&#160;member ShouldSerializeallValuesSuffix : unit -&gt; bool<br />&#160;&#160;member ShouldSerializeallowHtml : unit -&gt; bool<br />&#160;&#160;member ShouldSerializealternatingRowStyle : unit -&gt; bool<br />&#160;&#160;member ShouldSerializeanimation : unit -&gt; bool<br />&#160;&#160;member ShouldSerializeannotations : unit -&gt; bool<br />&#160;&#160;member ShouldSerializeannotationsWidth : unit -&gt; bool<br />&#160;&#160;member ShouldSerializeareaOpacity : unit -&gt; bool<br />&#160;&#160;member ShouldSerializeavoidOverlappingGridLines : unit -&gt; bool<br />&#160;&#160;...<br /><br />Full name: XPlot.GoogleCharts.Configuration.Options<br /><br />--------------------<br />new : unit -&gt; Options</div>
+<div class="tip" id="fs23">Multiple items<br />type ColorAxis =<br />&#160;&#160;new : unit -&gt; ColorAxis<br />&#160;&#160;member ShouldSerializecolors : unit -&gt; bool<br />&#160;&#160;member ShouldSerializelegend : unit -&gt; bool<br />&#160;&#160;member ShouldSerializemaxValue : unit -&gt; bool<br />&#160;&#160;member ShouldSerializeminValue : unit -&gt; bool<br />&#160;&#160;member ShouldSerializevalues : unit -&gt; bool<br />&#160;&#160;member colors : string []<br />&#160;&#160;member legend : Legend<br />&#160;&#160;member maxValue : int<br />&#160;&#160;member minValue : int<br />&#160;&#160;...<br /><br />Full name: XPlot.GoogleCharts.Configuration.ColorAxis<br /><br />--------------------<br />new : unit -&gt; ColorAxis</div>
+<div class="tip" id="fs24">type Chart =<br />&#160;&#160;static member Annotation : data:seq&lt;#seq&lt;DateTime * &#39;V * string * string&gt;&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart (requires &#39;V :&gt; value)<br />&#160;&#160;static member Annotation : data:seq&lt;DateTime * #value * string * string&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />&#160;&#160;static member Area : data:seq&lt;#seq&lt;&#39;K * &#39;V&gt;&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart (requires &#39;K :&gt; key and &#39;V :&gt; value)<br />&#160;&#160;static member Area : data:seq&lt;#key * #value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />&#160;&#160;static member Area : data:seq&lt;#value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />&#160;&#160;static member Bar : data:seq&lt;#seq&lt;&#39;K * &#39;V&gt;&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart (requires &#39;K :&gt; key and &#39;V :&gt; value)<br />&#160;&#160;static member Bar : data:seq&lt;#key * #value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />&#160;&#160;static member Bar : data:seq&lt;#value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />&#160;&#160;static member Bubble : data:seq&lt;string * #value * #value * #value * #value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />&#160;&#160;static member Bubble : data:seq&lt;string * #value * #value * #value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />&#160;&#160;...<br /><br />Full name: XPlot.GoogleCharts.Chart</div>
+<div class="tip" id="fs25">static member Chart.Geo : data:Frame&lt;string,&#39;V&gt; * ?Options:Options -&gt; GoogleChart (requires equality)<br />static member Chart.Geo : data:Series&lt;string,#value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />static member Chart.Geo : data:seq&lt;Series&lt;string,#value&gt;&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />static member Chart.Geo : data:seq&lt;string * #value * #value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />static member Chart.Geo : data:seq&lt;string * #value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart</div>
+<div class="tip" id="fs26">static member Chart.WithLabels : labels:seq&lt;string&gt; -&gt; chart:GoogleChart -&gt; GoogleChart</div>
+<div class="tip" id="fs27">static member Chart.WithOptions : options:Options -&gt; chart:GoogleChart -&gt; GoogleChart</div>
+<div class="tip" id="fs28">val topRate : Series&lt;string,float&gt;<br /><br />Full name: Bonus C.topRate</div>
+<div class="tip" id="fs29">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
+<div class="tip" id="fs30">val sortBy : projection:(&#39;T -&gt; &#39;Key) -&gt; list:&#39;T list -&gt; &#39;T list (requires comparison)<br /><br />Full name: Microsoft.FSharp.Collections.List.sortBy</div>
+<div class="tip" id="fs31">val snd : tuple:(&#39;T1 * &#39;T2) -&gt; &#39;T2<br /><br />Full name: Microsoft.FSharp.Core.Operators.snd</div>
+<div class="tip" id="fs32">val rev : list:&#39;T list -&gt; &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List.rev</div>
+<div class="tip" id="fs33">val toSeq : list:&#39;T list -&gt; seq&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.List.toSeq</div>
+<div class="tip" id="fs34">val series : observations:seq&lt;&#39;a * &#39;b&gt; -&gt; Series&lt;&#39;a,&#39;b&gt; (requires equality)<br /><br />Full name: Deedle.F# Series extensions.series</div>
+<div class="tip" id="fs35">Multiple items<br />module Series<br /><br />from Deedle<br /><br />--------------------<br />type Series =<br />&#160;&#160;new : ?type:string -&gt; Series<br />&#160;&#160;member ShouldSerializeannotations : unit -&gt; bool<br />&#160;&#160;member ShouldSerializeareaOpacity : unit -&gt; bool<br />&#160;&#160;member ShouldSerializecolor : unit -&gt; bool<br />&#160;&#160;member ShouldSerializecurveType : unit -&gt; bool<br />&#160;&#160;member ShouldSerializefallingColor : unit -&gt; bool<br />&#160;&#160;member ShouldSerializelineWidth : unit -&gt; bool<br />&#160;&#160;member ShouldSerializepointShape : unit -&gt; bool<br />&#160;&#160;member ShouldSerializepointSize : unit -&gt; bool<br />&#160;&#160;member ShouldSerializerisingColor : unit -&gt; bool<br />&#160;&#160;...<br /><br />Full name: XPlot.GoogleCharts.Configuration.Series<br /><br />--------------------<br />type Series&lt;&#39;K,&#39;V (requires equality)&gt; =<br />&#160;&#160;interface IFsiFormattable<br />&#160;&#160;interface ISeries&lt;&#39;K&gt;<br />&#160;&#160;new : pairs:seq&lt;KeyValuePair&lt;&#39;K,&#39;V&gt;&gt; -&gt; Series&lt;&#39;K,&#39;V&gt;<br />&#160;&#160;new : keys:&#39;K [] * values:&#39;V [] -&gt; Series&lt;&#39;K,&#39;V&gt;<br />&#160;&#160;new : keys:seq&lt;&#39;K&gt; * values:seq&lt;&#39;V&gt; -&gt; Series&lt;&#39;K,&#39;V&gt;<br />&#160;&#160;new : index:IIndex&lt;&#39;K&gt; * vector:IVector&lt;&#39;V&gt; * vectorBuilder:IVectorBuilder * indexBuilder:IIndexBuilder -&gt; Series&lt;&#39;K,&#39;V&gt;<br />&#160;&#160;member After : lowerExclusive:&#39;K -&gt; Series&lt;&#39;K,&#39;V&gt;<br />&#160;&#160;member Aggregate : aggregation:Aggregation&lt;&#39;K&gt; * observationSelector:Func&lt;DataSegment&lt;Series&lt;&#39;K,&#39;V&gt;&gt;,KeyValuePair&lt;&#39;TNewKey,OptionalValue&lt;&#39;R&gt;&gt;&gt; -&gt; Series&lt;&#39;TNewKey,&#39;R&gt; (requires equality)<br />&#160;&#160;member Aggregate : aggregation:Aggregation&lt;&#39;K&gt; * keySelector:Func&lt;DataSegment&lt;Series&lt;&#39;K,&#39;V&gt;&gt;,&#39;TNewKey&gt; * valueSelector:Func&lt;DataSegment&lt;Series&lt;&#39;K,&#39;V&gt;&gt;,OptionalValue&lt;&#39;R&gt;&gt; -&gt; Series&lt;&#39;TNewKey,&#39;R&gt; (requires equality)<br />&#160;&#160;member AsyncMaterialize : unit -&gt; Async&lt;Series&lt;&#39;K,&#39;V&gt;&gt;<br />&#160;&#160;...<br /><br />Full name: Deedle.Series&lt;_,_&gt;<br /><br />--------------------<br />new : ?type:string -&gt; Series<br /><br />--------------------<br />new : pairs:seq&lt;Collections.Generic.KeyValuePair&lt;&#39;K,&#39;V&gt;&gt; -&gt; Series&lt;&#39;K,&#39;V&gt;<br />new : keys:seq&lt;&#39;K&gt; * values:seq&lt;&#39;V&gt; -&gt; Series&lt;&#39;K,&#39;V&gt;<br />new : keys:&#39;K [] * values:&#39;V [] -&gt; Series&lt;&#39;K,&#39;V&gt;<br />new : index:Indices.IIndex&lt;&#39;K&gt; * vector:IVector&lt;&#39;V&gt; * vectorBuilder:Vectors.IVectorBuilder * indexBuilder:Indices.IIndexBuilder -&gt; Series&lt;&#39;K,&#39;V&gt;</div>
+<div class="tip" id="fs36">val sort : series:Series&lt;&#39;K,&#39;V&gt; -&gt; Series&lt;&#39;K,&#39;V&gt; (requires equality and comparison)<br /><br />Full name: Deedle.Series.sort</div>
+<div class="tip" id="fs37">val rev : series:Series&lt;&#39;K,&#39;T&gt; -&gt; Series&lt;&#39;K,&#39;T&gt; (requires equality)<br /><br />Full name: Deedle.Series.rev</div>
+<div class="tip" id="fs38">val take : count:int -&gt; series:Series&lt;&#39;K,&#39;T&gt; -&gt; Series&lt;&#39;K,&#39;T&gt; (requires equality)<br /><br />Full name: Deedle.Series.take</div>
+<div class="tip" id="fs39">static member Chart.Column : data:Frame&lt;&#39;K,&#39;V&gt; * ?Options:Options -&gt; GoogleChart (requires equality and equality)<br />static member Chart.Column : data:Series&lt;&#39;K,#value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart (requires equality and &#39;K :&gt; key)<br />static member Chart.Column : data:seq&lt;Series&lt;&#39;K,#value&gt;&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart (requires equality and &#39;K :&gt; key)<br />static member Chart.Column : data:seq&lt;#seq&lt;&#39;K * &#39;V&gt;&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart (requires &#39;K :&gt; key and &#39;V :&gt; value)<br />static member Chart.Column : data:seq&lt;#key * #value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart<br />static member Chart.Column : data:seq&lt;#value&gt; * ?Labels:seq&lt;string&gt; * ?Options:Options -&gt; GoogleChart</div>
+<div class="tip" id="fs40">static member Chart.WithTitle : title:string -&gt; chart:GoogleChart -&gt; GoogleChart</div>
+
+
+          
+        </div>
+        <div class="span1"></div>
+      </div>
+      <hr style="margin-top:50px;"/>
+      <footer class="footer" style="text-align:center">
+        Brought to you by the <a href="http://fsharp.org/technical-groups/">F# Data Science working group</a> and <a href="http://twitter.com/fslaborg">@fslaborg</a>.<br />
+        Submit <a href="https://github.com/fslaborg/FsLab">feedback on GitHub</a> and help us improve FsLab!
+      </footer>
+    </div>
+  </body>
+</html>
