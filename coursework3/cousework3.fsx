@@ -45,6 +45,13 @@ and BoolTree = | Bool of bool
                | LessThan of ExprTree * ExprTree
                | And of BoolTree * BoolTree
 
+(*
+  FEEDBACK:
+
+    You are allowing arbitrary expressions as patterns, although there are
+    expressions that are not patterns (for example, 3 * x).
+*)
+
 // 2. Extend the function eval defined in the lecture to support the
 // if-then-else expressions defined in Q1.
 let rec checkBool tree env = 
@@ -73,6 +80,14 @@ and  eval t env =
                         let res =List.find (fun (x,y) -> eval x env = pEval) list
                         eval (snd res) env
                         
+(*
+  FEEDBACK:
+
+    If the pattern is a variable, the tested expression is considered matching
+    if the result of the tested expression is the same as the current value
+    of the variable. However, the tested expression should always be considered
+    matching and its result should be assigned to the variable.
+*)
 
 //if a+3 > b+c && a>0 then c+d else e
 let env : Map<string,int> = Map.ofList ["a",20;"b",3;"c",5;"d",4;"e",100]
@@ -96,7 +111,13 @@ let rec filterB (prop: int -> bool) (list : BList) =
             Snoc(filterB prop h,t)            
         else
             filterB prop h      
-   
+
+(*
+  FEEDBACK:
+
+    OK
+*)
+
 let filterBExample = filterB (fun x -> 1<x) (Snoc(Snoc(Snoc(Snoc(BEmpty, 4), -6), 2), 1))
 //Snoc (Snoc (BEmpty,4),2)    
 
@@ -109,7 +130,13 @@ let rec mabB (trans: int -> int) (list : BList) =
     | Snoc (h, t) -> 
          Snoc (mabB trans h,
                         trans t)
- 
+
+(*
+  FEEDBACK:
+
+    OK
+*)
+
 let mapBExample = mabB (fun x -> x+10) (Snoc(Snoc(Snoc(Snoc(BEmpty, 4), -6), 2), 1))
 //val mapBExample : BList = Snoc (Snoc (Snoc (Snoc (BEmpty,14),4),12),11)   
 
@@ -131,6 +158,12 @@ type Tree =
 
 let exampleTree = Branch2(Nil,2,Branch3(Nil,3,Nil,5,Nil))
 
+(*
+  FEEDBACK:
+
+    OK
+*)
+
 // 6. Define a function sumTree : Tree -> int that computes the sum of
 //    all labels in the given tree.
 
@@ -140,6 +173,12 @@ let rec sumTree tree =
     | Branch2(ht,i,tt) -> 
         i + sumTree ht + sumTree tt
     | Branch3(ht,i,mt,k,tt) -> i+k + sumTree ht + sumTree tt + sumTree mt
+
+(*
+  FEEDBACK:
+
+    OK
+*)
 
 let sumTreeResult = sumTree exampleTree
 //val sumTreeResult : int = 10
@@ -160,6 +199,14 @@ let rec productTree tree =
         | _,0 -> 0
         | 0,_ -> 0
         | _,_ -> i * k * productTree ht * productTree tt * productTree mt
+
+(*
+  FEEDBACK:
+
+    While your implementation does not look at the subtrees if it encounters a
+    label 0, it still looks at all other remaining parts of the tree, which it
+    should not do.
+*)
 
 let productTreeResult = productTree exampleTree
 //val productTreeResult : int = 30
