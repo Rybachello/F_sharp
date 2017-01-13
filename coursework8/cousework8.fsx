@@ -46,6 +46,12 @@ let powers =
         Some(k, k * 2)
     Seq.unfold step 2
 
+(*
+  FEEDBACK:
+
+    OK
+*)
+
 //let test = powers |>Seq.take 10 |>Seq.toList
 (*
   Task 2:
@@ -74,6 +80,13 @@ let primes =
             yield! from (n+1)                           
             }
     from 2
+
+(*
+  FEEDBACK:
+
+    OK
+*)
+
 (*
   Task 3:
 
@@ -83,6 +96,12 @@ let primes =
   you may want to use the function isPrime : int -> bool defined above.
 *)
 let primes' = Seq.unfold (fun x-> Some (x, x+1)) 2 |> Seq.filter isPrime
+
+(*
+  FEEDBACK:
+
+    OK
+*)
 
 (*
   Task 4:
@@ -107,6 +126,13 @@ let fourthRoot x =
         let! r2 = squareRoot r1
         return r2
     }
+
+(*
+  FEEDBACK:
+
+    OK
+*)
+
 //fourthRoot -16.0
 //val it : float option = None
 (*
@@ -176,7 +202,13 @@ let rec eval (t:Expr) =
                                      let! env1 = Map.add s1 v1
                                      return (eval t2  env1)
             }
-  
+
+(*
+  FEEDBACK:
+
+    OK
+*)
+
 let env : Map<string,int> = Map.ofList ["a",20;"b",3;"c",5;"d",4;"e",100]
 let exp = Sum(Ident("a"),Sum(Ident("b"),Ident("c")))
 eval exp env
