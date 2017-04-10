@@ -84,7 +84,7 @@ let rec isPalindrome xs =
                      | (y :: ys) -> x = y && isPalindrome ys
 
 let checkPalindromeA xs =
-    isPalindrome xs ==> (List.rev xs |> isPalindrome)
+    isPalindrome xs ==> (List.rev xs |> isPalindrome) // The definition says that a palindrome is equal to its reverse, so you should be checking that
 Check.Quick checkPalindromeA
 let checkPalindromeB xs =
     checkPalindromeA xs |> Prop.collect (xs.Length)
